@@ -1,0 +1,569 @@
+/* 全屏动画容器样式 */
+#animation-container {
+    position: fixed;
+    top: 40%;
+    left: 40%;
+    width: 20%;
+    height: 20%;
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+a {
+    text-decoration: none;
+    /* 去除下划线 */
+    color: inherit;
+    /* 继承父元素的颜色 */
+}
+
+/* 页面内容容器样式 */
+#content {
+    display: none;
+}
+
+/* 样式部分 */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+
+
+.header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background-color: #f8f8f8;
+    padding: 10px 0;
+    border-bottom: 1px solid #ddd;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+}
+
+.header .content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.main {
+    margin-top: 70px;
+    /* 留出 header 的空间 */
+    padding: 20px;
+}
+
+.footer-mobile {
+    background-color: #f8f8f8;
+    padding: 20px 0;
+    border-top: 1px solid #ddd;
+    text-align: center;
+    display: none;
+}
+
+.footer {
+    background-color: #f8f8f8;
+    padding: 20px 0;
+    border-top: 1px solid #ddd;
+    text-align: center;
+    display: block;
+}
+
+.footer-top {
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 20px;
+}
+
+.footer-left {
+    flex: 1;
+    display: flex;
+    justify-content: space-between;
+    width: 50%;
+}
+
+.footer-column {
+    margin-top: 10px;
+
+    width: 100%;
+}
+
+.footer-column h3 {
+    font-family: Josefin Sans, sans-serif;
+    font-size: 20px;
+    margin-bottom: 30px;
+}
+
+.footer-column ul {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-column ul li {
+    margin-bottom: 15px;
+}
+
+.footer-column ul li a {
+    font-family: Josefin Sans, sans-serif;
+    color: #424242;
+    text-decoration: none;
+}
+
+.footer-column ul li a :hover {
+    color: #000;
+}
+
+.footer-column-p {
+    font-family: Josefin Sans, sans-serif;
+    color: rgb(165, 165, 165);
+    text-decoration: none;
+}
+
+.footer-column-p :hover {
+    color: #000;
+}
+
+.footer-right {
+    flex: 1;
+    width: 50%;
+    text-align: center;
+}
+
+.qrcode-image {
+    max-width: 150px;
+    margin: 0 auto 10px;
+    display: block;
+}
+
+.social-media-small {
+    width: 60%;
+}
+
+.social-media {
+    display: flex;
+    justify-content: center;
+    /* 水平居中 */
+}
+
+.social-media a img {
+    width: 40px;
+    height: 40px;
+}
+
+.footer-bottom {
+    border-top: 1px solid #ddd;
+    padding-top: 10px;
+}
+
+.social-media-small img:hover {
+    transform: scale(1.05);
+}
+
+
+
+.underline {
+    text-align: left;
+    object-fit: cover;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    width: auto;
+    height: auto;
+    margin-bottom: 0%;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 1%;
+    padding-bottom: 5%;
+    display: block;
+    position: relative;
+    left: auto;
+    right: auto;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body,
+html {
+    width: 100%;
+    height: 100%;
+    overflow-x: hidden;
+    /* 防止页面水平滚动条 */
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* border: 1px solid black; */
+    height: 60vh;
+    /* 确保父容器高度为整个视窗高度 */
+    width: 100vw;
+    /* 确保父容器宽度为整个视窗宽度 */
+    overflow: hidden;
+    /* 防止内容溢出 */
+}
+
+.container2 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* border: 1px solid black; */
+    height: 500px;
+    /* 确保父容器高度为整个视窗高度 */
+    width: 100%;
+    /* 确保父容器宽度为整个视窗宽度 */
+    overflow: hidden;
+    /* 防止内容溢出 */
+}
+
+.video-container {
+    width: 80%;
+    /* 调整视频容器宽度，使视频缩小 */
+    max-width: 960px;
+    /* 设置最大宽度 */
+
+    height: auto;
+    /* 让高度自适应宽度 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    /* 添加阴影 */
+}
+
+video {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+}
+
+.el-carousel__item h3 {
+    color: #475669;
+    font-size: 18px;
+    opacity: 0.75;
+    line-height: 300px;
+    margin: 0;
+}
+
+.el-carousel__item:nth-child(2n) {
+    background-color: #99a9bf;
+}
+
+.el-carousel__item:nth-child(2n+1) {
+    background-color: #d3dce6;
+}
+
+/* .product-container {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+}
+
+.product-box {
+    width: 23%;
+    padding: 10px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.product-box:hover {
+    transform: scale(1.05);
+    box-shadow: 0 2px 10px rgba(0, 123, 255, 0.5);
+}
+
+.product-image {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+} */
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    padding: 20px;
+    height: 1250px;
+}
+
+.image-container {
+    width: 100%;
+    height: 450px;
+    overflow: hidden;
+    margin-bottom: 20px;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.image-container:hover {
+    transform: scale(1.01);
+    box-shadow: 0 2px 10px rgba(0, 123, 255, 0.5);
+}
+
+.image-container2 {
+    width: 100%;
+    height: 125px;
+    overflow: hidden;
+    margin-bottom: 60px;
+    margin-top: 40px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.image-container2:hover {
+    transform: scale(1.01);
+    box-shadow: 0 2px 10px rgba(0, 123, 255, 0.5);
+}
+
+.image-container2 img {
+    border-radius: 10px;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.image-container img {
+    border-radius: 10px;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.content-container {
+    display: flex;
+    width: 80%;
+    height: 600px;
+
+    overflow: hidden;
+}
+
+.image-section {
+    width: 66.66%;
+    height: 100%;
+}
+
+.image-section img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.text-section {
+    width: 33.33%;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.text-section h1 {
+    font-family: 'Josefin Sans', sans-serif;
+    margin: 0;
+    font-size: 36px;
+}
+
+.text-section p {
+    font-family: 'Josefin Sans', serif;
+    margin-top: 10px;
+    font-size: 24px;
+}
+
+/* 新添加的样式 */
+.profile-container {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 40px;
+}
+
+.profile-box {
+    width: 30%;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.profile-box:hover {
+    transform: scale(1.05);
+    box-shadow: 0 2px 10px rgba(0, 123, 255, 0.5);
+}
+
+.profile-top {
+    display: flex;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.profile-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.profile-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.profile-name {
+    font-weight: bold;
+}
+
+.profile-job {
+    color: gray;
+}
+
+.profile-description {
+    text-align: center;
+}
+
+.tableDataBox {
+    width: 100%;
+    height: 300px;
+    border: 1px solid black;
+}
+
+.ShopBtn {
+    margin-right: 30px;
+}
+
+.shippingtext {
+    width: 50%;
+    height: auto;
+    color: rgb(34, 63, 97);
+}
+
+.ShopBtnSmall {
+    display: none;
+}
+
+.Josefin-font {
+    font-family: Josefin Sans, sans-serif;
+    color: rgb(34, 63, 97);
+}
+
+.snh-background-color {
+    background-color: rgb(243, 242, 238);
+}
+
+.SNH_font01 {
+    text-align: center;
+    font-size: 26px;
+    font-family: Josefin Sans, sans-serif;
+}
+
+.SNH_font02 {
+    margin-top: 20px;
+    font-size: 16px;
+    font-family: Josefin Sans, sans-serif;
+}
+
+.SNH_font03 {
+    font-size: 14px;
+    color: rgb(34, 63, 97);
+    font-family: Josefin Sans, sans-serif;
+}
+
+.MainDiv {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 90vh;
+}
+
+.text-block-4 {
+    color: #223f61;
+    text-align: center;
+    margin-left: 0%;
+    padding-top: 5%;
+    padding-bottom: 1%;
+    margin-top: 120px;
+    font-family: Josefin Sans, sans-serif;
+    font-size: 3vw;
+    font-weight: 700;
+}
+@media (max-width: 1400px){
+    .text-block-4 {
+        margin-top: 0px;
+    }
+
+    .MainDiv{
+        min-height: 50vh;
+    }
+}
+/* 屏幕较小时调整为上下布局 */
+@media (max-width: 1024px) {
+    .footer-top {
+        flex-direction: column;
+        /* 切换为上下布局 */
+    }
+
+    .footer-left,
+    .footer-right {
+        width: 100%;
+        /* 确保两边都占据100%宽度 */
+    }
+    .underline {
+        width: 50%;
+    }
+    .shippingtext {
+        width: 70%;
+    }
+}
+
+@media (max-width: 768px) {
+    .ShopBtn {
+        display: none;
+    }
+
+    .ShopBtnSmall {
+        margin-right: 30px;
+        display: block;
+    }
+
+    .underline {
+        width: 60%;
+    }
+
+}
+
+@media (max-width: 540px) {
+    .footer-mobile {
+        display: block;
+    }
+
+    .text-block-4 {
+        font-size: 8vw;
+    }
+
+    .underline {
+        width: 60%;
+    }
+
+    .shippingtext {
+        width: 90%;
+    }
+
+    .footer {
+        display: none;
+    }
+}
