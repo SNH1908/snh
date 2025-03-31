@@ -1,8 +1,0 @@
-[
-    {
-      "origin": ["https://stylenhomes.web.app","https://stylenhomes.com/"],
-      "method": ["GET"],
-      "maxAgeSeconds": 3600
-    }
-  ]
-  
