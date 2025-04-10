@@ -7,6 +7,9 @@ import Product from '@/pages/Product.vue';
 import ProductionInformation from '@/pages/ProductionInformation.vue';
 import SearchPage from '@/pages/SearchPage.vue';
 import DownloadPage from '@/pages/Download.vue';
+import Viewed from '@/pages/Viewed.vue';
+import ListsPage from '@/pages/Lists.vue';
+
 const routes = [
   {
     path: '/',
@@ -69,6 +72,26 @@ const routes = [
     component: SearchPage,
     meta: {
       title: 'Search',
+      favicon: require('@/assets/favicon.png'),
+    },
+    props: true
+  },
+  {
+    path: '/Viewed',
+    name: 'Viewed',
+    component: Viewed,
+    meta: {
+      title: 'Viewed',
+      favicon: require('@/assets/favicon.png'),
+    },
+    props: true
+  },
+  {
+    path: '/Lists',
+    name: 'ListsPage',
+    component: ListsPage,
+    meta: {
+      title: 'Lists',
       favicon: require('@/assets/favicon.png'),
     },
     props: true

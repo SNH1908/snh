@@ -33,11 +33,13 @@
 
 <script>
 import MainLayout from "@/layouts/MainLayout.vue";
-import { getData } from '@/services/firebaseService';
+import { getData, updateData } from '@/services/firebaseService';
 import InformationPageData from "@/components/InformationPageData.vue";
 import InformationPageImage from "@/components/InformationPageImage.vue";
 import MoreInformationCard from "@/components/MoreInformationCard.vue";
 import ProductRecommendation from "@/components/ProductRecommendation.vue";
+import { useUser } from "../auth";
+
 export default {
     name: "SNH-Product",
     components: {
@@ -49,6 +51,7 @@ export default {
     },
     data() {
         return {
+            UserData: useUser(),
             tableData: '',
             fit: 'cover',
             Path: '',
@@ -82,11 +85,25 @@ export default {
     },
     methods: {
         async fetchData() {
-            const data = await getData('Catalog/Products/'+ this.$route.query.productID);
+            const productID = this.$route.query.productID;
+            const data = await getData('Catalog/Products/' + productID);
             this.tableData = data;
+            //viewed
+
+            const User = this.UserData;
+            if (User) {
+                const Path = 'UserData/' + User.uid + '/viewed/' + productID;
+                const currentTime = new Date().getTime();
+                const Data = {
+                    product: productID,
+                    viewtime: currentTime
+                }
+                updateData(Path, Data);
+            }
+
         },
         getPath(value) {
-            return 'Store/'+value;
+            return 'Store/' + value;
         },
 
 

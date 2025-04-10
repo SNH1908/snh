@@ -4,7 +4,7 @@
     </div>
     <div v-else>
 
-        <div class="EmptyBox" v-if="IsSearch">
+        <div class="EmptyBox" v-if="divider">
             <el-divider border-style="dashed" />
         </div>
 
@@ -77,7 +77,7 @@
                         <el-image class="ProductCardImg" :src="item.Image" :fit="fit" />
                         <template #footer>
                             <div style="height: 45px;">
-                                <p class="Sour_Gummyn_font">{{ TruncationStr(item.name,100) }}</p>
+                                <p class="Sour_Gummyn_font">{{ TruncationStr(item.name, 100) }}</p>
                             </div>
                         </template>
                     </el-card>
@@ -92,7 +92,7 @@
                         <el-image class="ProductCardImg" :src="item.Image" :fit="fit" />
                         <template #footer>
                             <div style="height: 45px;">
-                            <p class="Sour_Gummyn_font">{{ TruncationStr(item.name,40) }}</p>
+                                <p class="Sour_Gummyn_font">{{ TruncationStr(item.name, 40) }}</p>
                             </div>
                         </template>
                     </el-card>
@@ -113,39 +113,24 @@ import { Operation, ArrowDown } from '@element-plus/icons-vue'
 
 <script>
 import { getData } from '@/services/firebaseService';
+import { useUserStore } from "@/stores/user";
+
+
 export default {
     props: {
-        pageProductId: {
+        PageType: {
             type: String,
             required: true
         },
-        SearchStr: {
-            type: String,
+        SearchValue: {
+            type: [String, Object, Array],
             required: true
         },
     },
     watch: {
-        '$route.query': {
-            handler(newQuery, oldQuery) {
-                if (newQuery.SearchStr !== oldQuery.SearchStr) {
-                    if (this.pageProductId) {
-                        this.fetchData();
-                    } else {
-                        this.IsSearch = true;
-                        this.SearchData();
-                    }
-                }
-            },
-
-        },
-        pageProductId(newValue) {
+        SearchValue(newValue) {
             if (newValue) {
-                if (this.pageProductId) {
-                    this.fetchData();
-                } else {
-                    this.IsSearch = true;
-                    this.SearchData();
-                }
+                this.ProcessingData(this.PageType);
             }
         }
     },
@@ -157,21 +142,42 @@ export default {
             url: require('@/assets/DataLoding.png'),
             ProductTableData: null,
             AllData: '',
-            IsSearch: false,
+            divider: false,
             EmptyStatus: false,
+
         };
     },
     created() {
-        if (this.pageProductId) {
-            this.fetchData();
-        } else {
-            this.IsSearch = true;
-            this.SearchData();
-        }
-
+        this.ProcessingData(this.PageType);
+    },
+    computed: {
+        userStore() {
+            return useUserStore();
+        },
     },
     methods: {
-        TruncationStr(Value,num) {
+        ProcessingData(Value) {
+            switch (Value) {
+                case 'Search':
+                    this.divider = true;
+                    this.SearchData();
+                    break;
+                case 'Product':
+                    this.fetchData();
+                    break;
+                case 'Viewed':
+                    this.divider = true;
+                    this.ViewedData();
+                    break;
+                case 'Lists':
+                    this.divider = true;
+                    this.ListsData();
+                    break;
+                default:
+                    break;
+            }
+        },
+        TruncationStr(Value, num) {
             if (typeof Value !== 'string') {
                 return '';
             }
@@ -225,11 +231,11 @@ export default {
         async SearchData() {
 
             if (this.AllData === '') {
-                const data = await getData('Catalog/Products');
-                this.AllData = data;
+                this.fetchDataFromFirebase('SearchData');
+                return;
             }
-            this.SearchAbout(this.SearchStr);
-            let firstLetter = this.SearchStr.substring(0, 1);
+            this.SearchAbout(this.SearchValue);
+            let firstLetter = this.SearchValue.substring(0, 1);
             if (this.ProductTableData.length === 0) {
                 this.SearchAbout(firstLetter);
             }
@@ -238,13 +244,82 @@ export default {
             }
 
         },
-        async fetchData() {
+        ListsData() {
+            this.ViewedData();
+        },
+        async ViewedData() {
             this.productnum = 0;
             if (this.AllData === '') {
-                const data = await getData('Catalog/Products');
-                this.AllData = data;
+                this.fetchDataFromFirebase('ViewedData');
+                return;
             }
-            // const data = await getData('Store/' + this.pageProductId);
+            const data = this.AllData;
+            const ViewedList = this.SearchValue;
+
+            let tableData = [];
+            for (let Productkey in data) {
+                let item = data[Productkey], oneImage = '';
+                if (item.isdelete == 'true' || item.isdelete == true) {
+                    continue;
+                }
+                for (let key in item.Images) {
+                    oneImage = item.Images[key];
+                    break;
+                }
+                for (let key in ViewedList) {
+                    if (item.ID == key) {
+                        tableData.push({
+                            number: tableData.length + 1,
+                            name: item.Name || this.SearchValue,
+                            ID: item.ID || '',
+                            Image: oneImage || '',
+                            Specifications: item.Specifications || '',
+                            Dimensions: item.Dimensions || '',
+                            Description: item.Description || '',
+                            About: item.About || '',
+                        });
+                        this.productnum++;
+                    }
+
+                }
+
+            }
+            this.ProductTableData = tableData;
+            this.loading = false;
+        },
+        async fetchDataFromFirebase(Value) {
+            if (this.userStore.ConfigProductList) {
+                this.AllData = this.userStore.ConfigProductList;
+                console.log("get old data..-->"+JSON.stringify(this.userStore.ConfigProductList.length));
+            } else {
+                const data = await getData('Catalog/Products');
+                this.userStore.setConfigProductList(data);
+                this.AllData = this.userStore.ConfigProductList;
+                console.log("get new data..");
+            }
+
+            switch (Value) {
+                case 'fetchData':
+                    this.fetchData();
+                    break;
+                case 'ViewedData':
+                    this.ViewedData();
+                    break;
+                case 'SearchData':
+                    this.SearchData();
+                    break;
+                default:
+                    break;
+            }
+        },
+        async fetchData() {
+            this.productnum = 0;
+
+            if (this.AllData === '') {
+                this.fetchDataFromFirebase('fetchData');
+                return;
+            }
+
             const data = this.AllData;
             if (!data) {
                 this.loading = false;
@@ -262,10 +337,10 @@ export default {
                     oneImage = item.Images[key];
                     break;
                 }
-                if (item.PARENT_ONE == this.pageProductId || item.PARENT_TWO == this.pageProductId) {
+                if (item.PARENT_ONE == this.SearchValue || item.PARENT_TWO == this.SearchValue) {
                     tableData.push({
                         number: tableData.length + 1,
-                        name: item.Name || this.pageProductId,
+                        name: item.Name || this.SearchValue,
                         ID: item.ID || '',
                         Image: oneImage || '',
                         Specifications: item.Specifications || '',
@@ -295,7 +370,7 @@ export default {
             } else {
                 this.$router.push({
                     name: 'ProductionInformation',
-                    query: { productType: this.pageProductId, productID: item.ID }
+                    query: { productType: this.SearchValue, productID: item.ID }
                 }).then(() => {
                     document.body.scrollTo(0, 0);
                 });

@@ -3,7 +3,7 @@
         <div class="HomePagebox">
             <h1 class="Home_font01"> Showing results for "{{ SearchStr }}".</h1>
             <!--产品数据-->
-            <ProductData :pageProductId=false :SearchStr="SearchStr" />
+            <ProductData PageType="Search" :SearchValue="SearchStr" />
             
         </div>
 
@@ -14,17 +14,6 @@
 import MainLayout from "@/layouts/MainLayout.vue";
 import ProductData from "@/components/ProductData.vue";
 
-/*
-
-import ProductTitleImage from "@/components/ProductTitleImage.vue";
-
-<!--产品标题图片-->
-<ProductTitleImage :pageProductId="pageProductId" />
-
-
-
-ProductTitleImage,
-*/
 export default {
     name: "SNH-SearchPage",
     components: {

@@ -39,7 +39,13 @@
                 <el-button-group>
                     <el-button color="rgb(34, 63, 97)" class="BuyBtn" style="margin-right: 1px;" size="large">ADD TO
                         CART</el-button>
-                    <el-button color="rgb(34, 63, 97)" class="BuyBtnstar" size="large">
+                    <el-button v-if="isLists" color="rgb(34, 63, 97)" class="BuyBtnstar" size="large">
+                        <el-icon color="gold">
+                            <StarFilled />
+                        </el-icon>
+                    </el-button>
+                    <el-button color="rgb(34, 63, 97)" class="BuyBtnstar" size="large" v-else
+                        @click="AddProductToLists">
                         <el-icon>
                             <StarFilled />
                         </el-icon>
@@ -138,6 +144,10 @@ const activeNames = ref(['1'])
 <script>
 import Quill from "quill";
 import "quill/dist/quill.snow.css";
+import { getData,updateData } from '@/services/firebaseService';
+import { useUser } from "../auth";
+import { ElMessage } from 'element-plus'
+import { useUserStore } from "@/stores/user";
 
 export default {
     props: {
@@ -152,6 +162,8 @@ export default {
             ProductNum: 0,
             ImageMobileUrl: '',
             truncateStatue: true,
+            UserData: useUser(),
+            isLists: false,
         };
     },
     watch: {
@@ -159,7 +171,13 @@ export default {
             if (newValue) {
                 this.CreateUrl();
             }
-        }
+        },
+        'userStore.isLoaded'(loaded) {
+            if (loaded && this.userStore.currentUser) {
+                this.UserData = this.userStore.currentUser;
+                this.CheckLists();
+            }
+        },
     },
     computed: {
         // 判断是否为富文本格式（Quill Delta 格式）
@@ -171,7 +189,7 @@ export default {
             }
         },
         // 将 Quill Delta 格式转换为 HTML
-        
+
         renderedContent() {
             if (!this.isRichText) return this.ProductData.Description;
 
@@ -180,9 +198,45 @@ export default {
             quill.setContents(this.ProductData.Description);
 
             return tempContainer.innerHTML; // 取出 HTML
-        }
+        },
+        userStore() {
+            return useUserStore();
+        },
     },
     methods: {
+        async CheckLists() {
+            // console.log('this.UserData:'+JSON.stringify(this.UserData));
+            const User = this.UserData;
+            const Path = 'UserData/' + User.uid + '/lists';
+            const UserListsList = await getData(Path);
+
+
+            for (let key in UserListsList) {
+                if (key == this.ProductData.ID) {
+                    this.isLists = true;
+                }
+            }
+
+
+        },
+        AddProductToLists() {
+            const User = this.UserData;
+            const ProductID = this.ProductData.ID;
+            if (User && ProductID) {
+                const Path = 'UserData/' + User.uid + '/lists/' + ProductID;
+                const currentTime = new Date().getTime();
+                const Data = {
+                    product: ProductID,
+                    viewtime: currentTime
+                }
+                updateData(Path, Data);
+                this.isLists = true;
+                ElMessage({
+                    message: 'Successfully added product to list.',
+                    type: 'success',
+                })
+            }
+        },
         truncateString(str) {
             if (typeof str !== 'string') return ''; // 非字符串直接返回空字符串
             return str.length > 500 ? str.substring(0, 500) + '...' : str;

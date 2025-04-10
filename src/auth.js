@@ -7,6 +7,7 @@ export function useAuth() {
 
   onAuthStateChanged(auth, (currentUser) => {
     user.value = currentUser;
+    
   });
 
   provide("user", user);

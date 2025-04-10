@@ -4,7 +4,7 @@
             <!--产品标题图片-->
             <ProductTitleImage :pageProductId="pageProductId" />
             <!--产品数据-->
-            <ProductData :pageProductId="pageProductId" />
+            <ProductData PageType="Product" :SearchValue="pageProductId" />
         </div>
 
     </MainLayout>
